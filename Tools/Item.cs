@@ -10,7 +10,7 @@ namespace Export.Tools
     /// <summary>
     /// 工具类
     /// </summary>
-    class Item
+    public class Item
     {
         /// <summary>
         /// SHA256签名
