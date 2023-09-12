@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Export.Tools
 {
@@ -12,6 +13,11 @@ namespace Export.Tools
     /// </summary>
     public class Item
     {
+        /// <summary>
+        /// 选择的文件夹路径
+        /// </summary>
+        private static string ChousePath;
+
         /// <summary>
         /// SHA256签名
         /// (不适用于签名中文内容,中文加密和js上的加密不同)
@@ -116,7 +122,118 @@ namespace Export.Tools
             return uuid;
         }
 
+        /// <summary>
+        /// 选择文件夹
+        /// </summary>
+        /// <param name="tishi">选择时候提示内容</param>
+        public static void ChoiceFolder(ref string label, string tishi)
+        {
+            ChoiceFolder(ref label, tishi, Environment.SpecialFolder.MyDocuments);
+        }
 
+        /// <summary>
+        /// 选择文件夹
+        /// </summary>
+        /// <param name="tishi">选择时候提示内容</param>
+        /// <param name="path">已经存在的文件路径</param>
+        public static void ChoiceFolder(ref string label, string tishi, string path)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = tishi;
+            dialog.ShowNewFolderButton = false;
+            if (path != String.Empty && path != null)
+            {
+                dialog.SelectedPath = path;
+            }
+            //else
+            //{
+            //    dialog.SelectedPath = dialog.SelectedPath + "\\Hinterland\\TheLongDark";
+            //}
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(dialog.SelectedPath))
+                {
+                    return;
+                }
+                //this.LoadingText = "处理中...";
+                //this.LoadingDisplay = true;
+                //Action<string> a = DaoRuData;
+                //a.BeginInvoke(dialog.SelectedPath, asyncCallback, a);
+                path = dialog.SelectedPath;
+            }
+            label = path;
+        }
+
+        /// <summary>
+        /// 选择文件夹
+        /// </summary>
+        /// <param name="tishi">选择时候提示内容</param>
+        /// <param name="folder">系统文件夹枚举项</param>
+        public static void ChoiceFolder(ref string label, string tishi, Environment.SpecialFolder folder)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = tishi;
+            dialog.ShowNewFolderButton = false;
+            //dialog.RootFolder = folder;
+            dialog.SelectedPath = Environment.GetFolderPath(folder);
+            var path = dialog.SelectedPath;
+            if (ChousePath != String.Empty && ChousePath != null)
+            {
+                dialog.SelectedPath = ChousePath;
+            }
+            //else
+            //{
+            //    dialog.SelectedPath = dialog.SelectedPath + "\\Hinterland\\TheLongDark";
+            //}
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(dialog.SelectedPath))
+                {
+                    return;
+                }
+                //this.LoadingText = "处理中...";
+                //this.LoadingDisplay = true;
+                //Action<string> a = DaoRuData;
+                //a.BeginInvoke(dialog.SelectedPath, asyncCallback, a);
+                ChousePath = dialog.SelectedPath;
+            }
+            else if (dialog.ShowDialog() == DialogResult.Cancel)
+            {
+                ChousePath = path;
+            }
+            label = ChousePath;
+        }
+
+        /// <summary>
+        /// 使用cmd命令
+        /// </summary>
+        /// <param name="cmdCode"></param>
+        public static void UseCmd(string cmdCode)
+        {
+            System.Diagnostics.Process proIP = new System.Diagnostics.Process();
+            proIP.StartInfo.FileName = "cmd.exe";
+            proIP.StartInfo.UseShellExecute = false;
+            proIP.StartInfo.RedirectStandardInput = true;
+            proIP.StartInfo.RedirectStandardOutput = true;
+            proIP.StartInfo.RedirectStandardError = true;
+            proIP.StartInfo.CreateNoWindow = true;
+            proIP.Start();
+            proIP.StandardInput.WriteLine(cmdCode);
+            proIP.StandardInput.WriteLine("exit");
+            string strResult = proIP.StandardOutput.ReadToEnd();
+            Console.WriteLine(strResult);
+            proIP.Close();
+        }
+
+        /// <summary>
+        /// 判断dll是否能用
+        /// </summary>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
+        public static bool IsAssemblyLoaded(string assemblyName)
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name == assemblyName);
+        }
     }
 
     /// <summary>
