@@ -205,6 +205,52 @@ namespace Export.Tools
         }
 
         /// <summary>
+        /// 选择指定文件
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="tishi">选择时候提示内容</param>
+        /// <param name="folder">系统文件夹枚举项</param>
+        /// <param name="name">限定文件</param>
+        public static void ChoiceFile(ref string label,string tishi,Environment.SpecialFolder folder,string name)
+        {
+            var openDialog = new OpenFileDialog();
+
+            openDialog.InitialDirectory = Environment.GetFolderPath(folder);
+            openDialog.Filter = $"({name})|{name}";
+            openDialog.FilterIndex = 1;
+            openDialog.RestoreDirectory = true;
+            openDialog.Title = tishi;
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                label = openDialog.FileName;
+            }
+        }
+
+        /// <summary>
+        /// 选择指定文件
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="tishi">选择时候提示内容</param>
+        /// <param name="folder">系统文件夹枚举项</param>
+        /// <param name="name">限定文件</param>
+        public static void ChoiceFile(ref string label,string tishi,string folder,string name)
+        {
+            var openDialog = new OpenFileDialog();
+
+            openDialog.InitialDirectory = folder;
+            openDialog.Filter = $"({name})|{name}";
+            openDialog.FilterIndex = 1;
+            openDialog.RestoreDirectory = true;
+            openDialog.Title = tishi;
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                label = openDialog.FileName;
+            }
+        }
+
+        /// <summary>
         /// 使用cmd命令
         /// </summary>
         /// <param name="cmdCode"></param>
@@ -233,6 +279,18 @@ namespace Export.Tools
         public static bool IsAssemblyLoaded(string assemblyName)
         {
             return AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name == assemblyName);
+        }
+
+        /// <summary>
+        /// 获取dll位置
+        /// 找不到会报错
+        /// </summary>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
+        public static string GetDllPath(string assemblyName)
+        {
+            var assembly = System.Reflection.Assembly.Load(assemblyName);
+            return assembly.Location;
         }
     }
 
