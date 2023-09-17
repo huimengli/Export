@@ -15,7 +15,7 @@ namespace Export
         /// <summary>
         /// 录制位置
         /// </summary>
-        private static string Path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\output.mp4";
+        private static string Path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\output.mkv";
 #if !Record
         /// <summary>
         /// 录制模块
@@ -41,6 +41,10 @@ namespace Export
         /// ffmpeg.exe模块位置
         /// </summary>
         public static string FFMPEGEXEPATH = "";
+        /// <summary>
+        /// 页面
+        /// </summary>
+        public static RecordWindow window;
 
         /// <summary>
         /// 录制
@@ -50,7 +54,11 @@ namespace Export
         static void Record()
         {
             Debug.Log(Path);
-            CreateInstance<RecordWindow>().Show();
+            if (window==null)
+            {
+                window = CreateInstance<RecordWindow>();
+            }
+            window.Show();
         }
 
         /// <summary>
@@ -74,7 +82,11 @@ namespace Export
             Debug.Log(Path);
             record2 = new Record2(Path);
             FFMPEGEXEPATH = record2.FFMPEGPATH;
-            CreateInstance<RecordWindow>().Show();
+            if (window == null)
+            {
+                window = CreateInstance<RecordWindow>();
+            }
+            window.Show();
         }
 
         /// <summary>
@@ -94,12 +106,13 @@ namespace Export
             GUILayout.BeginVertical();
 
             //录制存放位置
+            GUILayout.Label("录制文件保存位置:");
             GUILayout.BeginHorizontal();
             GUILayout.TextArea(Path);
             if (GUILayout.Button("...", GUILayout.Width(30)))
             {
                 Item.ChoiceFolder(ref Path, "选择保存文件夹");
-                Path = Path += "\\output.mp4";
+                Path = Path += "\\output.mkv";
             }
             GUILayout.EndHorizontal();
 
@@ -138,6 +151,7 @@ namespace Export
             #region 用Record2.cs(ffmpeg.exe)录制
 #if !Record2
             //ffmpeg.exe位置
+            GUILayout.Label("ffmpeg.exe存放位置:");
             GUILayout.BeginHorizontal();
             GUILayout.TextArea(FFMPEGEXEPATH);
             if (GUILayout.Button("...",GUILayout.Width(30)))
@@ -165,9 +179,15 @@ namespace Export
                 {
                     Debug.LogAssertion("录制位置未定位!");
                 }
+                else if (record2==null)
+                {
+                    record2 = new Record2(Path, FFMPEGEXEPATH);
+                    record2.Start();
+                    Debug.Log("开始录制");
+                }
                 else
                 {
-                    
+                    record2.SetPATH(Path);
                     record2.Start();
                     Debug.Log("开始录制");
                 }
@@ -180,6 +200,7 @@ namespace Export
                     record2 = null;
                     Debug.Log("录制完成");
                     Item.UseCmd($"explorer /select,{Path}");
+                    window.Close();
                 }
                 else
                 {

@@ -140,7 +140,7 @@ namespace Export.Tools
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             dialog.Description = tishi;
-            dialog.ShowNewFolderButton = false;
+            dialog.ShowNewFolderButton = true;
             if (path != String.Empty && path != null)
             {
                 dialog.SelectedPath = path;
@@ -173,7 +173,7 @@ namespace Export.Tools
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             dialog.Description = tishi;
-            dialog.ShowNewFolderButton = false;
+            dialog.ShowNewFolderButton = true;
             //dialog.RootFolder = folder;
             dialog.SelectedPath = Environment.GetFolderPath(folder);
             var path = dialog.SelectedPath;

@@ -128,6 +128,15 @@ namespace Export
         }
 
         /// <summary>
+        /// 设置视频保存位置
+        /// </summary>
+        /// <param name="path"></param>
+        public void SetPATH(string path)
+        {
+            this.savePath = path;
+        }
+
+        /// <summary>
         /// 保存数据
         /// </summary>
         public void Save()
@@ -149,6 +158,42 @@ namespace Export
             }
         }
 
+        ///// <summary>
+        ///// 开始录制
+        ///// </summary>
+        //public void Start()
+        //{
+        //    if (recordProcess!=null)
+        //    {
+        //        Debug.LogError("录制尚未停止!");
+        //        return;
+        //    }
+
+        //    if (string.IsNullOrEmpty(ffmpegPath))
+        //    {
+        //        Debug.LogError("没有找到ffmpeg.exe位置!");
+        //        return;
+        //    }
+
+        //    // 创建新进程启动信息
+        //    ProcessStartInfo startInfo = new ProcessStartInfo
+        //    {
+        //        FileName = ffmpegPath,
+        //        Arguments = $" -f gdigrab -i desktop {savePath}",
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        RedirectStandardOutput = true,
+        //        RedirectStandardError = true
+        //    };
+
+        //    Debug.Log(startInfo.FileName);
+        //    Debug.Log(startInfo.Arguments);
+
+        //    // 开始录制
+        //    recordProcess = new Process { StartInfo = startInfo };
+        //    recordProcess.Start();
+        //}
+
         /// <summary>
         /// 开始录制
         /// </summary>
@@ -157,28 +202,49 @@ namespace Export
             if (recordProcess!=null)
             {
                 Debug.LogError("录制尚未停止!");
+                return;
             }
 
             if (string.IsNullOrEmpty(ffmpegPath))
             {
                 Debug.LogError("没有找到ffmpeg.exe位置!");
+                return;
             }
 
             // 创建新进程启动信息
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
-                FileName = ffmpegPath,
-                Arguments = $"-f gdigrab -i desktop {savePath}",
+                FileName = "cmd.exe",
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardInput = true,
+                RedirectStandardError = true,
             };
 
             // 开始录制
             recordProcess = new Process { StartInfo = startInfo };
             recordProcess.Start();
+
+            // 录制命令
+            var recordValue = $"{ffmpegPath} -f gdigrab -i desktop {savePath}";
+            Debug.Log(recordValue);
+            recordProcess.StandardInput.WriteLine(recordValue);
         }
+
+        ///// <summary>
+        ///// 停止录制进程
+        ///// </summary>
+        //public void Stop()
+        //{
+        //    if (recordProcess!=null&&!recordProcess.HasExited)
+        //    {
+        //        string output = recordProcess.StandardOutput.ReadToEnd(); // 读取标准输出
+        //        Debug.Log(output);
+
+        //        recordProcess.Kill();
+        //        recordProcess.WaitForExit();
+        //    }
+        //}
 
         /// <summary>
         /// 停止录制进程
@@ -187,6 +253,11 @@ namespace Export
         {
             if (recordProcess!=null&&!recordProcess.HasExited)
             {
+                //string output = recordProcess.StandardOutput.ReadToEnd(); // 读取标准输出
+                //Debug.Log(output);
+                recordProcess.StandardInput.Write(Convert.ToChar(3)); //尝试发送 Ctrl+C
+                recordProcess.StandardInput.WriteLine();
+                recordProcess.StandardInput.WriteLine("exit");
                 recordProcess.Kill();
                 recordProcess.WaitForExit();
             }
