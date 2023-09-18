@@ -223,6 +223,7 @@ namespace Export.Tools
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
+                UnityEngine.Debug.Log(openDialog.FileName);
                 label = openDialog.FileName;
             }
         }
@@ -246,6 +247,7 @@ namespace Export.Tools
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
+                UnityEngine.Debug.Log(openDialog.FileName);
                 label = openDialog.FileName;
             }
         }

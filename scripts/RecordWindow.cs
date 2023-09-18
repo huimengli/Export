@@ -7,6 +7,7 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using Export.Tools;
+using System.Threading;
 
 namespace Export
 {
@@ -198,7 +199,8 @@ namespace Export
                 {
                     record2.Stop();
                     record2 = null;
-                    Debug.Log("录制完成");
+                    Debug.Log("录制完成,等待文件写入");
+                    //hread.Sleep(10 * 1000);
                     Item.UseCmd($"explorer /select,{Path}");
                     window.Close();
                 }

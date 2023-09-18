@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 
 using Debug = UnityEngine.Debug;
 using System.Text;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace Export
 {
@@ -16,6 +18,9 @@ namespace Export
     /// </summary>
     public class Record2
     {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
         /// <summary>
         /// 配置文件位置
         /// </summary>
@@ -68,7 +73,7 @@ namespace Export
         /// <summary>
         /// 初始化录制模块
         /// </summary>
-        public Record2():this(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\output.mp4")
+        public Record2():this(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\output.mkv")
         {
             
         }
@@ -102,6 +107,10 @@ namespace Export
             {
                 file.Create();
             }
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                SetProcessDPIAware();
+            }
         }
 
         /// <summary>
@@ -113,7 +122,10 @@ namespace Export
         {
             this.savePath = savePath;
             this.ffmpegPath = ffmpegPath;
-
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                SetProcessDPIAware();
+            }
             Save();
         }
 
@@ -218,8 +230,22 @@ namespace Export
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardInput = true,
-                RedirectStandardError = true,
+                RedirectStandardError = false,
             };
+
+            //判断文件是否已经存在
+            var saveFile = new FileInfo(savePath);
+            if (saveFile.Exists)
+            {
+                if (MessageBox.Show($"{savePath} 文件已经存在,是否删除?", "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    saveFile.Delete();
+                }
+                else
+                {
+                    return;
+                }
+            }
 
             // 开始录制
             recordProcess = new Process { StartInfo = startInfo };
@@ -255,11 +281,35 @@ namespace Export
             {
                 //string output = recordProcess.StandardOutput.ReadToEnd(); // 读取标准输出
                 //Debug.Log(output);
-                recordProcess.StandardInput.Write(Convert.ToChar(3)); //尝试发送 Ctrl+C
+                //recordProcess.StandardInput.Write(Convert.ToChar(3)); //尝试发送 Ctrl+C
+                recordProcess.StandardInput.Write("\x03"); //尝试发送 Ctrl+C
                 recordProcess.StandardInput.WriteLine();
                 recordProcess.StandardInput.WriteLine("exit");
                 recordProcess.Kill();
                 recordProcess.WaitForExit();
+                Thread.Sleep(15 * 1000);
+                KillFFMPEG();
+            }
+        }
+
+        public void KillFFMPEG()
+        {
+            // 获取所有名为 "ffmpeg" 的进程
+            Process[] processes = Process.GetProcessesByName("ffmpeg");
+            Console.WriteLine(processes.Length);
+
+            // 遍历进程列表并终止它们
+            foreach (Process process in processes)
+            {
+                try
+                {
+                    process.Kill();
+                    Console.WriteLine($"Process {process.Id} has been terminated.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error terminating process {process.Id}: {ex.Message}");
+                }
             }
         }
     }
