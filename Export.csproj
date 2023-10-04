@@ -54,8 +54,10 @@
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\ReadyOnlyAttribute.cs" />
-    <Compile Include="Attribute\ReadyOnlyEditor.cs" />
+    <Compile Include="Attribute\ReadOnlyAttribute.cs" />
+    <Compile Include="Attribute\ReadOnlyEditor.cs" />
+    <Compile Include="Attribute\ReadOnlyTextAreaAttribute.cs" />
+    <Compile Include="Attribute\ReadOnlyTextAreaDrawer.cs" />
     <Compile Include="Editor\Button.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="scripts\Export.cs" />
