@@ -382,7 +382,7 @@ namespace Export.Tools
                 var value = t.Result;
                 // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
                 Debug.Log("用户输入内容: " + value);
-                if (callBack!=null&&value!=null)
+                if (callBack!=null&&!string.IsNullOrEmpty(value))
                 {
                     //在主线程上执行回调
                     //Dispatcher.Invoke(() => callBack(value));
