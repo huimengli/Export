@@ -63,6 +63,7 @@
     <Compile Include="scripts\RecordWindow.cs" />
     <Compile Include="Tools\Base64.cs" />
     <Compile Include="Tools\Item.cs" />
+    <Compile Include="Tools\Message.cs" />
     <Compile Include="UnityFBXExporter\ExporterMenu.cs" />
     <Compile Include="UnityFBXExporter\FBXExporter.cs" />
     <Compile Include="UnityFBXExporter\FBXUnityMaterialGetter.cs" />
