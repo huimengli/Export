@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UnityEngine;
 
 namespace Export.Tools
 {
@@ -294,6 +295,102 @@ namespace Export.Tools
             var assembly = System.Reflection.Assembly.Load(assemblyName);
             return assembly.Location;
         }
+
+        ///// <summary>
+        ///// 获取输入
+        ///// </summary>
+        ///// <returns></returns>
+        //public static Task<String> GetInput()
+        //{
+        //    var value = "";
+
+        //    return Task.Factory.StartNew(() =>
+        //    {
+        //        System.Windows.Forms.Application.EnableVisualStyles();
+        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        //        var input = new InputBox();
+        //        System.Windows.Forms.Application.Run(input);
+
+        //        value = input.value;
+        //    }).ContinueWith(t =>
+        //    {
+        //        // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
+        //        Debug.Log("用户输入内容: " + value);
+        //        return value;
+        //    }, TaskScheduler.FromCurrentSynchronizationContext());// 使用主线程的上下文来更新 UI 或其他主线程操作
+        //}
+
+        ///// <summary>
+        ///// 获取输入
+        ///// 需要.NET 4.5及以上
+        ///// </summary>
+        ///// <returns></returns>
+        //public static async string GetInput()
+        //{
+        //    var value = "";
+
+        //    value = await Task<string>.Factory.StartNew(() =>
+        //    {
+        //        System.Windows.Forms.Application.EnableVisualStyles();
+        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        //        var input = new InputBox();
+        //        System.Windows.Forms.Application.Run(input);
+
+        //        return input.value;
+        //    });
+
+        //    return value;
+        //}
+
+        ///// <summary>
+        ///// 获取输入
+        ///// </summary>
+        ///// <returns></returns>
+        //public static string GetInput()
+        //{
+        //    var value = "";
+
+        //    ItemAdd.Run(() =>
+        //    {
+        //        System.Windows.Forms.Application.EnableVisualStyles();
+        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        //        var input = new InputBox();
+        //        System.Windows.Forms.Application.Run(input);
+
+        //        value = input.value;
+        //    });
+
+        //    return value;
+        //}
+
+        /// <summary>
+        /// 获取输入
+        /// </summary>
+        /// <returns></returns>
+        public static void GetInput(Action<string> callBack)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                System.Windows.Forms.Application.EnableVisualStyles();
+                System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+                var input = new InputBox();
+                System.Windows.Forms.Application.Run(input);
+
+                return input.value;
+            }).ContinueWith(t =>
+            {
+                var value = t.Result;
+                // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
+                Debug.Log("用户输入内容: " + value);
+                if (callBack!=null&&value!=null)
+                {
+                    //在主线程上执行回调
+                    //Dispatcher.Invoke(() => callBack(value));
+                    //不使用Dispatcher反而可以使用...
+                    callBack(value);
+                }
+            });
+        }
     }
 
     /// <summary>
@@ -315,6 +412,16 @@ namespace Export.Tools
             ret = ret / 10000;
 
             return ret;
+        }
+
+        /// <summary>
+        /// 异步运行
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static Task Run(Action action)
+        {
+            return Task.Factory.StartNew(action);
         }
     }
 }
