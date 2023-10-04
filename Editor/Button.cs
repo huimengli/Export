@@ -18,7 +18,7 @@ namespace Export.Editor
             if (GUILayout.Button("修改消息"))
             {
                 Item.GetInput(value => {
-                    Debug.Log($"回调显示:{value}");
+                    //Debug.Log($"回调显示:{value}");
                     message.ChangeValue(value);
                 });
             }

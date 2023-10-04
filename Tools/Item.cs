@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Export.Forms;
 using UnityEngine;
 
 namespace Export.Tools
@@ -369,27 +370,54 @@ namespace Export.Tools
         /// <returns></returns>
         public static void GetInput(Action<string> callBack)
         {
-            Task.Factory.StartNew(() =>
+            var form = GetForm("InputBox");
+            if (form == null)
             {
-                System.Windows.Forms.Application.EnableVisualStyles();
-                System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-                var input = new InputBox();
-                System.Windows.Forms.Application.Run(input);
+                Task.Factory.StartNew(() =>
+                    {
+                        System.Windows.Forms.Application.EnableVisualStyles();
+                        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+                        var input = new InputBox();
+                        System.Windows.Forms.Application.Run(input);
 
-                return input.value;
-            }).ContinueWith(t =>
+                        return input.value;
+                    }).ContinueWith(t =>
+                    {
+                        var value = t.Result;
+                        // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
+                        Debug.Log("用户输入内容: " + value);
+                        if (callBack != null && !string.IsNullOrEmpty(value))
+                        {
+                            //在主线程上执行回调
+                            //Dispatcher.Invoke(() => callBack(value));
+                            //不使用Dispatcher反而可以使用...
+                            callBack(value);
+                        }
+                    });
+            }
+            else
             {
-                var value = t.Result;
-                // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
-                Debug.Log("用户输入内容: " + value);
-                if (callBack!=null&&!string.IsNullOrEmpty(value))
+                form.ShowInTheCurrentScreenCenter();
+                form.Activate();
+                form.Focus();
+            }
+        }
+
+        /// <summary>
+        /// 检查窗口是否已经打开
+        /// </summary>
+        /// <param name="formName">窗体名称</param>
+        /// <returns></returns>
+        public static Form GetForm(string formName)
+        {
+            foreach (Form openForm in System.Windows.Forms.Application.OpenForms)
+            {
+                if (openForm.Name == formName || openForm is InputBox)
                 {
-                    //在主线程上执行回调
-                    //Dispatcher.Invoke(() => callBack(value));
-                    //不使用Dispatcher反而可以使用...
-                    callBack(value);
+                    return openForm;
                 }
-            });
+            }
+            return null;
         }
     }
 

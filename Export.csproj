@@ -63,8 +63,11 @@
     <Compile Include="scripts\Record2.cs" />
     <Compile Include="scripts\RecordWindow.cs" />
     <Compile Include="Tools\Base64.cs" />
-    <Compile Include="Tools\InputBox.cs">
+    <Compile Include="Form\InputBox.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\InputBox.Designer.cs">
+      <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\Item.cs" />
     <Compile Include="scripts\Message.cs" />
@@ -82,7 +85,11 @@
     <None Include="json\dataExamples.json" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Form\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
