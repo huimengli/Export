@@ -17,10 +17,14 @@ namespace Export.Editor
             var message = (Message)target;
             if (GUILayout.Button("修改消息"))
             {
-                Item.GetInput(value => {
-                    //Debug.Log($"回调显示:{value}");
-                    message.ChangeValue(value);
-                });
+                Item.GetInput(
+                    $"对象:[{message.name}]的备注内容:",
+                    message.value,
+                    value => {
+                        //Debug.Log($"回调显示:{value}");
+                        message.ChangeValue(value);
+                    }
+                );
             }
         }
     }

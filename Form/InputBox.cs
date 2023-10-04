@@ -20,15 +20,34 @@ namespace Export.Forms
             private set;
         } = "";
 
+        /// <summary>
+        /// 初始化输入框
+        /// </summary>
         public InputBox():this("请输入内容:")
         {
             
         }
 
-        public InputBox(string tishi)
+        /// <summary>
+        /// 初始化输入框
+        /// </summary>
+        /// <param name="tishi">提示内容</param>
+        public InputBox(string tishi) : this(tishi, "")
+        {
+
+        }
+
+
+        /// <summary>
+        /// 初始化输入框
+        /// </summary>
+        /// <param name="tishi">提示内容</param>
+        /// <param name="value">输入框内已有内容</param>
+        public InputBox(string tishi,string value)
         {
             InitializeComponent();
             this.label1.Text = tishi;
+            this.textBox1.Text = value;
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)

@@ -367,8 +367,35 @@ namespace Export.Tools
         /// <summary>
         /// 获取输入
         /// </summary>
+        /// <param name="tishi">输入框提示</param>
+        /// <param name="value">输入框内已有内容</param>
+        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
         /// <returns></returns>
         public static void GetInput(Action<string> callBack)
+        {
+            GetInput("请输入内容:",callBack);
+        }
+        
+        /// <summary>
+        /// 获取输入
+        /// </summary>
+        /// <param name="tishi">输入框提示</param>
+        /// <param name="value">输入框内已有内容</param>
+        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <returns></returns>
+        public static void GetInput(string tishi,Action<string> callBack)
+        {
+            GetInput(tishi, "", callBack);
+        }
+
+        /// <summary>
+        /// 获取输入
+        /// </summary>
+        /// <param name="tishi">输入框提示</param>
+        /// <param name="value">输入框内已有内容</param>
+        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <returns></returns>
+        public static void GetInput(string tishi,string value,Action<string> callBack)
         {
             var form = GetForm("InputBox");
             if (form == null)
@@ -377,21 +404,21 @@ namespace Export.Tools
                     {
                         System.Windows.Forms.Application.EnableVisualStyles();
                         System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-                        var input = new InputBox();
+                        var input = new InputBox(tishi,value);
                         System.Windows.Forms.Application.Run(input);
 
                         return input.value;
                     }).ContinueWith(t =>
                     {
-                        var value = t.Result;
+                        var ret = t.Result;
                         // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
-                        Debug.Log("用户输入内容: " + value);
-                        if (callBack != null && !string.IsNullOrEmpty(value))
+                        Debug.Log("用户输入内容: " + ret);
+                        if (callBack != null && !string.IsNullOrEmpty(ret))
                         {
                             //在主线程上执行回调
                             //Dispatcher.Invoke(() => callBack(value));
                             //不使用Dispatcher反而可以使用...
-                            callBack(value);
+                            callBack(ret);
                         }
                     });
             }
