@@ -10,23 +10,32 @@ namespace Export.Attribute
         {
             var attribute = (ReadOnlyTextAreaAttribute)this.attribute;
 
-            EditorGUI.BeginDisabledGroup(true);  // Disable editing
+            // 计算文本区域的高度
+            float textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(property.stringValue), position.width);
 
-            EditorGUI.BeginChangeCheck();
-            string newValue = EditorGUI.TextArea(position, property.stringValue, EditorStyles.textArea);
+            // 计算标签的高度
+            float labelHeight = EditorGUIUtility.singleLineHeight;
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                property.stringValue = newValue;
-            }
+            // 合并高度
+            float totalHeight = textHeight + labelHeight;
 
-            EditorGUI.EndDisabledGroup();  // Re-enable GUI
+            EditorGUI.BeginDisabledGroup(true);  // 禁用 GUI，使文本区域为只读
+
+            // 绘制变量名
+            EditorGUI.LabelField(new Rect(position.x, position.y, position.width, labelHeight), label);
+
+            // 绘制只读文本区域
+            EditorGUI.TextArea(new Rect(position.x, position.y + labelHeight, position.width, textHeight), property.stringValue, EditorStyles.textArea);
+
+            EditorGUI.EndDisabledGroup();  // 重新启用 GUI
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var attribute = (ReadOnlyTextAreaAttribute)this.attribute;
-            return EditorStyles.textArea.CalcHeight(new GUIContent(property.stringValue), EditorGUIUtility.currentViewWidth) * Mathf.Clamp(attribute.maxLines, 1, int.MaxValue);
+            float textHeight = EditorStyles.textArea.CalcHeight(new GUIContent(property.stringValue), EditorGUIUtility.currentViewWidth);
+            float labelHeight = EditorGUIUtility.singleLineHeight;
+            return textHeight + labelHeight;
         }
     }
 }
