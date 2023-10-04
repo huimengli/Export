@@ -60,6 +60,11 @@
     <Compile Include="Attribute\ReadOnlyTextAreaDrawer.cs" />
     <Compile Include="Editor\Button.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="scripts\Export.cs" />
     <None Include="scripts\Record.cs" />
     <Compile Include="scripts\Record2.cs" />
@@ -80,8 +85,10 @@
     <Compile Include="UnityFBXExporter\FBXUnityMeshGetter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon\favicon.ico" />
     <Content Include="lib\UnityEditor.dll" />
     <Content Include="lib\UnityEngine.dll" />
+    <None Include="Resources\Icon1.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="json\dataExamples.json" />
@@ -90,6 +97,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Form\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />

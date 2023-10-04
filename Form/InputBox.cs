@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Export.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
@@ -58,6 +60,10 @@ namespace Export.Forms
 
         private void InputBox_Load(object sender, EventArgs e)
         {
+            //修改Icon
+            var resources = new ComponentResourceManager(typeof(Resources));
+            this.Icon = (System.Drawing.Icon)resources.GetObject("favicon");
+
             this.ShowInTheCurrentScreenCenter();
         }        
     }
