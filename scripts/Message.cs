@@ -16,8 +16,15 @@ namespace Export
         /// 这里不写内容
         /// 是丢给编译器给别人看消息用的
         /// </summary>
+        [TextArea]
         [ReadOnly]
         public string value;
+
+        /// <summary>
+        /// 这里就是为了测试
+        /// </summary>
+        [ReadOnly]
+        public string test;
 
         /// <summary>
         /// 修改文字内容
