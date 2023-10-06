@@ -16,6 +16,7 @@ namespace Export
         /// 这里不写内容
         /// 是丢给编译器给别人看消息用的
         /// </summary>
+        [SerializeField]
         [ReadOnlyTextArea]
         public string value;
 

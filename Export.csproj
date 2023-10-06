@@ -88,7 +88,6 @@
     <Content Include="icon\favicon.ico" />
     <Content Include="lib\UnityEditor.dll" />
     <Content Include="lib\UnityEngine.dll" />
-    <None Include="Resources\Icon1.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="json\dataExamples.json" />
@@ -102,6 +101,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
