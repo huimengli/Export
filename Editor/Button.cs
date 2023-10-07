@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿//#define UNITY_EDITOR
+
+using UnityEditor;
 using UnityEngine;
 using Export.Tools;
 
@@ -26,6 +28,16 @@ namespace Export.Editor
                     }
                 );
             }
+#if UNITY_EDITOR
+            if (GUILayout.Button("保存数据"))
+            {
+                if (PrefabUtility.GetPrefabInstanceStatus(message.gameObject) != PrefabInstanceStatus.NotAPrefab)
+                {
+                    PrefabUtility.SavePrefabAsset(message.gameObject);
+                    Debug.Log($"预制件[{message.gameObject.name}] 已保存");
+                }
+            }
+#endif
         }
     }
 }

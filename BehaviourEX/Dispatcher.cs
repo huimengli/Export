@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-namespace Export.Tools
+namespace Export.BehaviourEX
 {
     /// <summary>
     /// UnityMainThreadDispatcher
@@ -18,9 +18,9 @@ namespace Export.Tools
         private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
         /// <summary>
-        /// Update 方法在每一帧都会被 Unity 调用
+        /// 执行线程上的操作
         /// </summary>
-        public void Update()
+        public void Upgrate()
         {
             // 使用 lock 语句确保线程安全，因为这个队列可能会被其他线程访问和修改
             lock (_executionQueue)
@@ -46,7 +46,7 @@ namespace Export.Tools
             lock (_executionQueue)
             {
                 // 把动作加入到队列中
-                // 它会在下一次 Update 方法调用时被执行
+                // 它会在下一次 Upgrade 方法调用时被执行
                 _executionQueue.Enqueue(action);
             }
         }
@@ -58,6 +58,11 @@ namespace Export.Tools
         public static void Invoke(Action action)
         {
             InvokeOnMainThread(action);
+        }
+
+        void Update()
+        {
+            Debug.Log("更新");
         }
     }
 }

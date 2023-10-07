@@ -416,7 +416,7 @@ namespace Export.Tools
                         if (callBack != null && !string.IsNullOrEmpty(ret))
                         {
                             //在主线程上执行回调
-                            //Dispatcher.Invoke(() => callBack(value));
+                            //Dispatcher.Invoke(() => callBack(ret));
                             //不使用Dispatcher反而可以使用...
                             callBack(ret);
                         }
