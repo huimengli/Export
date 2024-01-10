@@ -5,6 +5,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Export.Forms;
+using UnityEngine;
 
 namespace Export.Tools
 {
@@ -294,6 +296,156 @@ namespace Export.Tools
             var assembly = System.Reflection.Assembly.Load(assemblyName);
             return assembly.Location;
         }
+
+        ///// <summary>
+        ///// 获取输入
+        ///// </summary>
+        ///// <returns></returns>
+        //public static Task<String> GetInput()
+        //{
+        //    var value = "";
+
+        //    return Task.Factory.StartNew(() =>
+        //    {
+        //        System.Windows.Forms.Application.EnableVisualStyles();
+        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        //        var input = new InputBox();
+        //        System.Windows.Forms.Application.Run(input);
+
+        //        value = input.value;
+        //    }).ContinueWith(t =>
+        //    {
+        //        // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
+        //        Debug.Log("用户输入内容: " + value);
+        //        return value;
+        //    }, TaskScheduler.FromCurrentSynchronizationContext());// 使用主线程的上下文来更新 UI 或其他主线程操作
+        //}
+
+        ///// <summary>
+        ///// 获取输入
+        ///// 需要.NET 4.5及以上
+        ///// </summary>
+        ///// <returns></returns>
+        //public static async string GetInput()
+        //{
+        //    var value = "";
+
+        //    value = await Task<string>.Factory.StartNew(() =>
+        //    {
+        //        System.Windows.Forms.Application.EnableVisualStyles();
+        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        //        var input = new InputBox();
+        //        System.Windows.Forms.Application.Run(input);
+
+        //        return input.value;
+        //    });
+
+        //    return value;
+        //}
+
+        ///// <summary>
+        ///// 获取输入
+        ///// </summary>
+        ///// <returns></returns>
+        //public static string GetInput()
+        //{
+        //    var value = "";
+
+        //    ItemAdd.Run(() =>
+        //    {
+        //        System.Windows.Forms.Application.EnableVisualStyles();
+        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        //        var input = new InputBox();
+        //        System.Windows.Forms.Application.Run(input);
+
+        //        value = input.value;
+        //    });
+
+        //    return value;
+        //}
+
+        /// <summary>
+        /// 获取输入
+        /// </summary>
+        /// <param name="tishi">输入框提示</param>
+        /// <param name="value">输入框内已有内容</param>
+        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <returns></returns>
+        public static void GetInput(Action<string> callBack)
+        {
+            GetInput("请输入内容:",callBack);
+        }
+        
+        /// <summary>
+        /// 获取输入
+        /// </summary>
+        /// <param name="tishi">输入框提示</param>
+        /// <param name="value">输入框内已有内容</param>
+        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <returns></returns>
+        public static void GetInput(string tishi,Action<string> callBack)
+        {
+            GetInput(tishi, "", callBack);
+        }
+
+        /// <summary>
+        /// 获取输入
+        /// </summary>
+        /// <param name="tishi">输入框提示</param>
+        /// <param name="value">输入框内已有内容</param>
+        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <returns></returns>
+        public static void GetInput(string tishi,string value,Action<string> callBack)
+        {
+            var form = GetForm("InputBox");
+            if (form == null)
+            {
+                Task.Factory.StartNew(() =>
+                    {
+                        System.Windows.Forms.Application.EnableVisualStyles();
+                        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+                        var input = new InputBox(tishi,value);
+                        System.Windows.Forms.Application.Run(input);
+
+                        return input.value;
+                    }).ContinueWith(t =>
+                    {
+                        var ret = t.Result;
+                        // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
+                        Debug.Log("用户输入内容: " + ret);
+                        if (callBack != null && !string.IsNullOrEmpty(ret))
+                        {
+                            //在主线程上执行回调
+                            //Dispatcher.Invoke(() => callBack(ret));
+                            //不使用Dispatcher反而可以使用...
+                            callBack(ret);
+                        }
+                    });
+            }
+            else
+            {
+                form.ShowInTheCurrentScreenCenter();
+                form.Activate();
+                form.Focus();
+            }
+        }
+
+        /// <summary>
+        /// 检查窗口是否已经打开
+        /// </summary>
+        /// <param name="formName">窗体名称</param>
+        /// <returns></returns>
+        public static Form GetForm(string formName)
+        {
+            foreach (Form openForm in System.Windows.Forms.Application.OpenForms)
+            {
+                if (openForm.Name == formName || openForm is InputBox)
+                {
+                    return openForm;
+                }
+            }
+            return null;
+        }
     }
 
     /// <summary>
@@ -315,6 +467,16 @@ namespace Export.Tools
             ret = ret / 10000;
 
             return ret;
+        }
+
+        /// <summary>
+        /// 异步运行
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static Task Run(Action action)
+        {
+            return Task.Factory.StartNew(action);
         }
     }
 }
