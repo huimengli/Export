@@ -17,21 +17,29 @@ namespace Export.BehaviourEX
         /// NRInput对象名称
         /// </summary>
         public static readonly List<string> NRINPUT = new List<string> {
-        "NRInput"
-    };
+            "NRInput"
+        };
         /// <summary>
         /// NRInput右摇杆控制器名称
         /// </summary>
         public static readonly List<string> NRINPUT_RIGHT = new List<string> {
-        "Right"
-    };
+            "Right"
+        };
         /// <summary>
         /// NRInput手机屏幕名称
         /// </summary>
         public static readonly List<string> NR_VIRTUAL_DISPLAYER = new List<string> {
-        "NRVirtualDisplayer",
-        "NRVirtualDisplayer(Clone)"
-    };
+            "NRVirtualDisplayer",
+            "NRVirtualDisplayer(Clone)"
+        };
+        /// <summary>
+        /// NR摄像头对象
+        /// </summary>
+        public static readonly List<string> NR_CAMERA_RIG = new List<string>
+        {
+            "NRCameraRig",
+            "NRCameraRig(Clone)"
+        };
         /// <summary>
         /// 最大重试次数
         /// </summary>
@@ -58,6 +66,11 @@ namespace Export.BehaviourEX
         /// NRInput手机屏幕对象
         /// </summary>
         private static GameObject nrVirtualDisplayer;
+
+        /// <summary>
+        /// Nreal摄像头
+        /// </summary>
+        private static GameObject nrCameraRig;
 
         /// <summary>
         /// NRInput对象
@@ -145,6 +158,28 @@ namespace Export.BehaviourEX
         }
 
         /// <summary>
+        /// Nreal摄像头
+        /// </summary>
+        public static GameObject NRCameraRig
+        {
+            get
+            {
+                if (nrCameraRig!=null)
+                {
+                    return nrCameraRig;
+                }
+                else
+                {
+                    nrCameraRig = NR_CAMERA_RIG.Map(str =>
+                    {
+                        return GameObject.Find(str);
+                    }).GetOnlyOne();
+                    return nrCameraRig;
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据名称查找父对象下的对象
         /// </summary>
         /// <param name="objName">对象名称</param>
@@ -220,6 +255,10 @@ namespace Export.BehaviourEX
             if (NRVirtualDisplayer == null)
             {
                 StartErrorList.Add("NRVirtualDisplayer初始化失败!");
+            }
+            if (NRCameraRig == null)
+            {
+                StartErrorList.Add("NRCameraRig初始化失败!");
             }
         }
 
@@ -316,6 +355,9 @@ namespace Export.BehaviourEX
         /// 此方法已经被废弃<br />
         /// 请使用OnNewDestroy
         /// </summary>
+        /// <remarks>
+        /// 添加对象时,这里也需要修改
+        /// </remarks>
         [Obsolete("此方法已经被废弃,请使用OnNewDestroy")]
         private void OnDestroy()
         {
@@ -323,6 +365,7 @@ namespace Export.BehaviourEX
             nrInput = null;
             nrInputRight = null;
             nrVirtualDisplayer = null;
+            nrCameraRig = null;
 
             OnNewDestroy();
         }

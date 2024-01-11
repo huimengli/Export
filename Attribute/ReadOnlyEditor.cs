@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿//#define UNTIY_EDITOR
+
+using UnityEngine;
 using UnityEditor;
 
 namespace Export.Attribute
 {
+#if UNTIY_EDITOR
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyAttributeDrawer : PropertyDrawer
     {
@@ -13,5 +16,6 @@ namespace Export.Attribute
             EditorGUI.PropertyField(position, property, label);
         }
         #endregion
-    } 
+    }  
+#endif
 }
