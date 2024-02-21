@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Export.Attribute.Engine;
+using Export.Attribute;
 
 namespace Export.BehaviourEX
 {
