@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Export.Attribute
+namespace Export.Attribute.Engine
 {
     /// <summary>
     /// 允许内容以只读的方式进行多行显示

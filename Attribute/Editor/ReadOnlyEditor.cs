@@ -1,21 +1,16 @@
-﻿//#define UNTIY_EDITOR
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
+using Export.Attribute.Engine;
 
-namespace Export.Attribute
+namespace Export.Attribute.Editor
 {
-#if UNTIY_EDITOR
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyAttributeDrawer : PropertyDrawer
     {
-        #region UNITY_EDITOR
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             GUI.enabled = false;
             EditorGUI.PropertyField(position, property, label);
         }
-        #endregion
     }  
-#endif
 }

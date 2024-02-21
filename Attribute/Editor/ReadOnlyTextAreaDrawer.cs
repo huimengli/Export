@@ -1,7 +1,8 @@
-﻿using UnityEditor;
+﻿using Export.Attribute.Engine;
+using UnityEditor;
 using UnityEngine;
 
-namespace Export.Attribute
+namespace Export.Attribute.Editor
 {
     [CustomPropertyDrawer(typeof(ReadOnlyTextAreaAttribute))]
     class ReadOnlyTextAreaDrawer : PropertyDrawer

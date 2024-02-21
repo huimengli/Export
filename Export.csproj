@@ -76,10 +76,10 @@
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\ReadOnlyAttribute.cs" />
-    <Compile Include="Attribute\ReadOnlyEditor.cs" />
-    <Compile Include="Attribute\ReadOnlyTextAreaAttribute.cs" />
-    <Compile Include="Attribute\ReadOnlyTextAreaDrawer.cs" />
+    <Compile Include="Attribute\Engine\ReadOnlyAttribute.cs" />
+    <Compile Include="Attribute\Editor\ReadOnlyEditor.cs" />
+    <Compile Include="Attribute\Engine\ReadOnlyTextAreaAttribute.cs" />
+    <Compile Include="Attribute\Editor\ReadOnlyTextAreaDrawer.cs" />
     <Compile Include="BehaviourEX\DragAndStickBehaviour.cs" />
     <Compile Include="BehaviourEX\NrealBehaviour.cs" />
     <Compile Include="Editor\Button.cs" />
