@@ -189,6 +189,7 @@ namespace Export
                 else
                 {
                     record2.SetPATH(Path);
+                    record2.SetFFMPEG(record2.FFMPEGPATH??FFMPEGEXEPATH);
                     record2.Start();
                     Debug.Log("开始录制");
                 }
