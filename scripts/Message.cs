@@ -8,7 +8,7 @@ namespace Export
     /// 消息框
     /// 这里使用Dispatcher来替换MonoBehaviour
     /// </summary>
-    public class Message : Dispatcher
+    public class Message : MonoBehaviour
     {
         /// <summary>
         /// 这里不写内容

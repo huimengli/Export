@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using Export.Attribute;
 
 namespace Export.Attribute.Editor
 {
