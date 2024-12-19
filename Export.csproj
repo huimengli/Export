@@ -80,23 +80,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddFunc\DictionaryAdd.cs" />
+    <Compile Include="AddFunc\ListAdd.cs" />
     <Compile Include="Attribute\Engine\ReadOnlyAttribute.cs" />
     <Compile Include="Attribute\Editor\ReadOnlyEditor.cs" />
     <Compile Include="Attribute\Engine\ReadOnlyTextAreaAttribute.cs" />
     <Compile Include="Attribute\Editor\ReadOnlyTextAreaDrawer.cs" />
-    <Compile Include="BehaviourEX\DragAndStickBehaviour.cs" />
     <Compile Include="BehaviourEX\NrealBehaviour.cs" />
     <Compile Include="Class\DictionaryEX.cs" />
-    <Compile Include="Editor\Button.cs" />
+    <Compile Include="Editor\InspectorEX.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="scripts\AddDASPoint.cs" />
-    <Compile Include="scripts\ChangeOpacity.cs" />
-    <Compile Include="scripts\DragAndStick.cs" />
     <Compile Include="scripts\Export.cs" />
     <None Include="scripts\Record.cs" />
     <Compile Include="scripts\Record2.cs" />

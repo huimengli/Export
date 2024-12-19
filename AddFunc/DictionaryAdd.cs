@@ -59,5 +59,26 @@ namespace Export.AddFunc
         {
             return dict.ValuesToList().ToArray();
         }
+
+        /// <summary>
+        /// 对字典进行过滤
+        /// </summary>
+        /// <typeparam name="Tkey"></typeparam>
+        /// <typeparam name="Tvalue"></typeparam>
+        /// <param name="dict"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static Dictionary<Tkey, Tvalue> Filter<Tkey, Tvalue>(this Dictionary<Tkey, Tvalue> dict, Func<Tkey, Tvalue, bool> filter)
+        {
+            var ret = new Dictionary<Tkey, Tvalue>();
+            foreach (var item in dict)
+            {
+                if (filter(item.Key, item.Value))
+                {
+                    ret.Add(item.Key, item.Value);
+                }
+            }
+            return ret;
+        }
     }
 }

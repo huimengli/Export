@@ -11,6 +11,11 @@ namespace Export
     public class Message : MonoBehaviour
     {
         /// <summary>
+        /// 是否使用Form来获取输入
+        /// </summary>
+        public bool UseForm;
+
+        /// <summary>
         /// 这里不写内容
         /// 是丢给编译器给别人看消息用的
         /// </summary>
