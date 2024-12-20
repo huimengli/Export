@@ -80,5 +80,28 @@ namespace Export.AddFunc
             }
             return ret;
         }
+
+        /// <summary>
+        /// 如果字典中不存在指定的键，则添加键值对；
+        /// 如果字典中已存在指定的键，则更新其值。
+        /// </summary>
+        /// <typeparam name="TKey">字典的键类型</typeparam>
+        /// <typeparam name="TValue">字典的值类型</typeparam>
+        /// <param name="dictionary">要操作的字典</param>
+        /// <param name="key">键</param>
+        /// <param name="value">值</param>
+        public static void AddOrSet<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                // 如果字典中已包含该键，则更新值
+                dictionary[key] = value;
+            }
+            else
+            {
+                // 如果字典中没有该键，则添加新键值对
+                dictionary.Add(key, value);
+            }
+        }
     }
 }
