@@ -82,7 +82,7 @@ namespace Export.AddFunc
         }
 
         /// <summary>
-        /// 如果字典中不存在指定的键，则添加键值对；
+        /// 如果字典中不存在指定的键，则添加键值对,
         /// 如果字典中已存在指定的键，则更新其值。
         /// </summary>
         /// <typeparam name="TKey">字典的键类型</typeparam>

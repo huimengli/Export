@@ -243,5 +243,39 @@ namespace Export.AddFunc
             ts.Reverse();
             return ts;
         }
+
+        /// <summary>
+        /// 转为字典
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ts"></param>
+        /// <returns></returns>
+        public static Dictionary<int,T> ToDict<T>(this List<T> ts)
+        {
+            var ret = new Dictionary<int, T>();
+            ts.ForEach((t, i) =>
+            {
+                ret.Add(i, t);
+            });
+            return ret;
+        }
+
+        /// <summary>
+        /// 转为字典
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ts"></param>
+        /// <param name="getKey">获取Key方法</param>
+        /// <returns></returns>
+        public static Dictionary<TKey,T> ToDict<TKey,T>(this List<T> ts,Func<T,TKey> getKey)
+        {
+            var ret = new Dictionary<TKey, T>();
+            ts.ForEach(t =>
+            {
+                ret.Add(getKey(t), t);
+            });
+            return ret;
+        }
     }
 }

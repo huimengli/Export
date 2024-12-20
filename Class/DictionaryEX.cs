@@ -55,26 +55,12 @@ namespace Export.Class
 
         }
 
-        //
-        // 摘要:
-        //     获取或设置与指定的键关联的值。
-        //
-        // 参数:
-        //   key:
-        //     要获取或设置的值的键。
-        //
-        // 返回结果:
-        //     与指定的键相关联的值。 如果指定键未找到，则 Get 操作引发 System.Collections.Generic.KeyNotFoundException，而
-        //     Set 操作创建一个带指定键的新元素。
-        //
-        // 异常:
-        //   T:System.ArgumentNullException:
-        //     key 为 null。
         /// <summary>
         /// 获取或设置与指定的键关联的值
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">要获取或设置的值的键。</param>
+        /// <returns>与指定的键相关联的值。 如果指定键未找到，则 Get 操作引发 System.Collections.Generic.KeyNotFoundException，而 Set 操作创建一个带指定键的新元素。</returns>
+        /// <exception cref="System.ArgumentNullException">key 为 null</exception>
         public new TValue this[TKey key]
         {
             set
@@ -93,6 +79,157 @@ namespace Export.Class
                 }
             }
         }
+
+        #region 重写ToString
+        /// <summary>
+        /// 默认的 ToString 方法，返回字典的字符串表示。
+        /// </summary>
+        /// <returns>字典的字符串表示。</returns>
+        public override string ToString()
+        {
+            return ToString(0, true, typeof(Dictionary<TKey, TValue>));
+        }
+
+        /// <summary>
+        /// 带有缩进的 ToString 方法，根据给定的缩进值返回字典的字符串表示。
+        /// </summary>
+        /// <param name="indentation">缩进的空格数。</param>
+        /// <returns>字典的字符串表示。</returns>
+        public string ToString(int indentation)
+        {
+            return ToString(indentation, true, typeof(Dictionary<TKey, TValue>));
+        }
+
+        /// <summary>
+        /// 带有缩进和简洁名称选项的 ToString 方法，返回字典的字符串表示。
+        /// </summary>
+        /// <param name="indentation">缩进的空格数。</param>
+        /// <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+        /// <returns>字典的字符串表示。</returns>
+        public string ToString(int indentation, bool isSimple)
+        {
+            return ToString(indentation, isSimple, typeof(Dictionary<TKey, TValue>));
+        }
+
+        /// <summary>
+        /// 带有缩进和自定义类型名称的 ToString 方法，返回字典的字符串表示。
+        /// </summary>
+        /// <param name="indentation">缩进的空格数。</param>
+        /// <param name="dictionaryName">字典的自定义名称。</param>
+        /// <returns>字典的字符串表示。</returns>
+        public string ToString(int indentation, string dictionaryName)
+        {
+            return ToString(indentation, true, dictionaryName);
+        }
+
+        /// <summary>
+        /// 带有缩进、简洁名称和类型的 ToString 方法，返回字典的字符串表示。
+        /// </summary>
+        /// <param name="indentation">缩进的空格数。</param>
+        /// <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+        /// <param name="type">字典类型。</param>
+        /// <returns>字典的字符串表示。</returns>
+        public string ToString(int indentation, bool isSimple, Type type)
+        {
+            string className = isSimple ? type.Name : type.FullName;
+            return ToString(indentation, isSimple, className);
+        }
+
+        /// <summary>
+        /// 核心的 ToString 方法，格式化字典的字符串表示。
+        /// </summary>
+        /// <param name="indentation">缩进的空格数。</param>
+        /// <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+        /// <param name="dictionaryName">字典的自定义名称。</param>
+        /// <returns>字典的字符串表示。</returns>
+        public string ToString(int indentation, bool isSimple, string dictionaryName)
+        {
+            if (string.IsNullOrEmpty(dictionaryName))
+            {
+                dictionaryName = isSimple ? typeof(Dictionary<TKey, TValue>).Name : typeof(Dictionary<TKey, TValue>).FullName;
+            }
+
+            var ret = new StringBuilder();
+            string indent = new string(' ', indentation);
+
+            // 添加字典的类型名称
+            ret.Append(dictionaryName);
+            ret.Append("<");
+
+            // 处理字典为空的情况
+            if (this.Count == 0)
+            {
+                ret.Append("Object, Object");
+            }
+            else
+            {
+                // 获取字典中的第一个键值对的类型
+                var firstKey = this.Keys.GetEnumerator();
+                firstKey.MoveNext();
+                var firstValue = this[firstKey.Current];
+
+                ret.Append(isSimple ? firstKey.Current.GetType().Name : firstKey.Current.GetType().FullName);
+                ret.Append(", ");
+                ret.Append(isSimple ? firstValue.GetType().Name : firstValue.GetType().FullName);
+            }
+
+            ret.Append(">");
+            ret.Append(" {");
+            ret.Append("\n");
+
+            // 遍历字典，格式化每个键值对
+            foreach (var kvp in this)
+            {
+                ret.Append(indent);
+                ret.Append(new string(' ', 4));
+
+                ret.Append(kvp.Key != null ? kvp.Key.ToString() : "null");
+                ret.Append(" : ");
+                ret.Append(kvp.Value != null ? FormatValue(kvp.Value, indentation + 4, isSimple) : "null");
+
+                ret.Append("\n");
+            }
+
+            ret.Append(indent);
+            ret.Append("}");
+
+            return ret.ToString();
+        }
+
+        /// <summary>
+        /// 格式化字典中的值，根据不同类型的值返回相应的字符串表示。
+        /// </summary>
+        /// <param name="value">字典中的值。</param>
+        /// <param name="indentation">缩进的空格数。</param>
+        /// <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+        /// <returns>格式化后的值的字符串表示。</returns>
+        private string FormatValue(object value, int indentation, bool isSimple)
+        {
+            if (value == null) return "null";
+
+            // 处理不同类型的值
+            if (value is DictionaryEX<object, object> dict)
+            {
+                return dict.ToString(indentation, isSimple, typeof(DictionaryEX<object, object>).FullName);
+            }
+            else if (value is DateTime dateTime)
+            {
+                return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            else if (value is byte b)
+            {
+                return $"0x{b:X2}";
+            }
+            else if (value is IEnumerable<object> collection)
+            {
+                return string.Join(", ", collection);
+            }
+            else
+            {
+                return value.ToString();
+            }
+        }
+        #endregion
     }
 
     /// <summary>
@@ -489,9 +626,9 @@ namespace Export.Class
         /// <typeparam name="TValue"></typeparam>
         /// <param name="dict"></param>
         /// <param name="action"></param>
-        public static void ForEach<TKey,TValue>(
-            this DictionaryEX<TKey,TValue> dict,
-            Action<KeyValuePair<TKey,TValue>> action
+        public static void ForEach<TKey, TValue>(
+            this DictionaryEX<TKey, TValue> dict,
+            Action<KeyValuePair<TKey, TValue>> action
         )
         {
             foreach (var item in dict)
@@ -570,8 +707,9 @@ namespace Export.Class
         /// <returns></returns>
         public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
             this DictionaryEX<TKey, TValue> dict,
-            Func<KeyValuePair<TKey,TValue>,KeyValuePair<RKey,RValue>> func
-        ){
+            Func<KeyValuePair<TKey, TValue>, KeyValuePair<RKey, RValue>> func
+        )
+        {
             var ret = new DictionaryEX<RKey, RValue>();
             dict.ForEach(item =>
             {
@@ -591,10 +729,11 @@ namespace Export.Class
         /// <param name="dict"></param>
         /// <param name="func">操作方法</param>
         /// <returns></returns>
-        public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
-            this DictionaryEX<TKey,TValue> dict,
-            Func<TKey,TValue,KeyValuePair<RKey,RValue>> func
-        ){
+        public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
+            this DictionaryEX<TKey, TValue> dict,
+            Func<TKey, TValue, KeyValuePair<RKey, RValue>> func
+        )
+        {
             var ret = new DictionaryEX<RKey, RValue>();
             dict.ForEach((key, value) =>
             {
@@ -614,10 +753,11 @@ namespace Export.Class
         /// <param name="dict"></param>
         /// <param name="func">操作方法</param>
         /// <returns></returns>
-        public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
-            this DictionaryEX<TKey,TValue> dict,
-            Func<TKey,TValue,int,KeyValuePair<RKey,RValue>> func
-        ){
+        public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
+            this DictionaryEX<TKey, TValue> dict,
+            Func<TKey, TValue, int, KeyValuePair<RKey, RValue>> func
+        )
+        {
             var ret = new DictionaryEX<RKey, RValue>();
             dict.ForEach((key, value, index) =>
             {
@@ -657,15 +797,15 @@ namespace Export.Class
         /// <param name="dict"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
-            this DictionaryEX<TKey,TValue> dict,
-            Func<(TKey,TValue),(RKey,RValue)> func
+        public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
+            this DictionaryEX<TKey, TValue> dict,
+            Func<(TKey, TValue), (RKey, RValue)> func
         )
         {
             var ret = new DictionaryEX<RKey, RValue>();
             dict.ForEach(item =>
             {
-                var itemRet = func((item.Key,item.Value));
+                var itemRet = func((item.Key, item.Value));
                 ret.Add(itemRet.Item1, itemRet.Item2);
             });
             return ret;
@@ -681,9 +821,9 @@ namespace Export.Class
         /// <param name="dict"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
-            this DictionaryEX<TKey,TValue> dict,
-            Func<TKey,TValue,(RKey,RValue)> func
+        public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
+            this DictionaryEX<TKey, TValue> dict,
+            Func<TKey, TValue, (RKey, RValue)> func
         )
         {
             var ret = new DictionaryEX<RKey, RValue>();
@@ -705,9 +845,9 @@ namespace Export.Class
         /// <param name="dict"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
-            this DictionaryEX<TKey,TValue> dict,
-            Func<TKey,TValue,int,(RKey,RValue)> func
+        public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
+            this DictionaryEX<TKey, TValue> dict,
+            Func<TKey, TValue, int, (RKey, RValue)> func
         )
         {
             var ret = new DictionaryEX<RKey, RValue>();
