@@ -33,6 +33,9 @@ using FE = UnityFBXExporter.FBXExporter;
 
 namespace UnityFBXExporter
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class FBXUnityMeshGetter
 	{
 

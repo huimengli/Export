@@ -219,7 +219,7 @@ namespace Export.AddFunc
         }
 
         /// <summary>
-        /// 对List<T>的每个元素进行指定操作
+        /// 对List的每个元素进行指定操作
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ts"></param>

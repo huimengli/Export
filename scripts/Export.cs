@@ -9,9 +9,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityFBXExporter;
 
-/// <summary>
-/// 导出模块
-/// </summary>
 namespace Export
 {
     class ExportWindow : EditorWindow
@@ -163,7 +160,7 @@ namespace Export
         /// 导出当前场景
         /// </summary>
         /// <param name="copyMaterial">是否拷贝贴图</param>
-        /// <param name="copyMaterial">是否拷贝纹理</param>
+        /// <param name="copyTexture">是否拷贝纹理</param>
         public void Export(bool copyMaterial, bool copyTexture)
         {
             var divPath = Directory.GetCurrentDirectory();
@@ -307,12 +304,25 @@ namespace Export
             }
         }
 
+        /// <summary>
+        /// 移除指定Index的对象并返回自身
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static List<R> MyRemoveAt<R>(this List<R> list, int index)
         {
             list.RemoveAt(index);
             return list;
         }
 
+        /// <summary>
+        /// 将数组连接成字符串
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="add"></param>
+        /// <returns></returns>
         public static string Join(this string[] array, string add)
         {
             if (array.Length == 0)

@@ -343,6 +343,9 @@ namespace Export
             }
         }
 
+        /// <summary>
+        /// 关闭ffmpeg
+        /// </summary>
         public void KillFFMPEG()
         {
             // 获取所有名为 "ffmpeg" 的进程

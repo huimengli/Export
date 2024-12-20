@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace Export.Forms
 {
+    /// <summary>
+    /// 输入框
+    /// </summary>
     public partial class InputBox : Form
     {
         /// <summary>

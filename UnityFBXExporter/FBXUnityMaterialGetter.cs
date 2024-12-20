@@ -37,18 +37,23 @@ using FE = UnityFBXExporter.FBXExporter;
 
 namespace UnityFBXExporter
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class FBXUnityMaterialGetter
 	{
 
-		/// <summary>
-		/// Finds all materials in a gameobject and writes them to a string that can be read by the FBX writer
-		/// </summary>
-		/// <param name="gameObj">Parent GameObject being exported.</param>
-		/// <param name="newPath">The path to export to.</param>
-		/// <param name="materials">Materials which were written to this fbx file.</param>
-		/// <param name="matObjects">The material objects to write to the file.</param>
-		/// <param name="connections">The connections to write to the file.</param>
-		public static void GetAllMaterialsToString(GameObject gameObj, string newPath, bool copyMaterials, bool copyTextures, out Material[] materials, out string matObjects, out string connections)
+        /// <summary>
+        /// Finds all materials in a gameobject and writes them to a string that can be read by the FBX writer
+        /// </summary>
+        /// <param name="gameObj">Parent GameObject being exported.</param>
+        /// <param name="newPath">The path to export to.</param>
+        /// <param name="materials">Materials which were written to this fbx file.</param>
+        /// <param name="matObjects">The material objects to write to the file.</param>
+        /// <param name="connections">The connections to write to the file.</param>
+        /// <param name="copyMaterials">The connections to write to the file.</param>
+        /// <param name="copyTextures"></param>
+        public static void GetAllMaterialsToString(GameObject gameObj, string newPath, bool copyMaterials, bool copyTextures, out Material[] materials, out string matObjects, out string connections)
 		{
 			StringBuilder tempObjectSb = new StringBuilder();
 			StringBuilder tempConnectionsSb = new StringBuilder();
@@ -189,15 +194,17 @@ namespace UnityFBXExporter
 			connections = tempConnectionsSb.ToString();
 		}
 
-		/// <summary>
-		/// Serializes textures to FBX format.
-		/// </summary>
-		/// <param name="gameObj">Parent GameObject being exported.</param>
-		/// <param name="newPath">The path to export to.</param>
-		/// <param name="materials">Materials that holds all the textures.</param>
-		/// <param name="matObjects">The string with the newly serialized texture file.</param>
-		/// <param name="connections">The string to connect this to the  material.</param>
-		private static void SerializedTextures(GameObject gameObj, string newPath, Material material, string materialName, bool copyTextures, out string objects, out string connections)
+        /// <summary>
+        /// Serializes textures to FBX format.
+        /// </summary>
+        /// <param name="gameObj">Parent GameObject being exported.</param>
+        /// <param name="newPath">The path to export to.</param>
+        /// <param name="material">Materials that holds all the textures.</param>
+        /// <param name="connections">The string to connect this to the  material.</param>
+        /// <param name="materialName"></param>
+        /// <param name="copyTextures"></param>
+        /// <param name="objects"></param>
+        private static void SerializedTextures(GameObject gameObj, string newPath, Material material, string materialName, bool copyTextures, out string objects, out string connections)
 		{
 			// TODO: FBX import currently only supports Diffuse Color and Normal Map
 			// Because it is undocumented, there is no way to easily find out what other textures

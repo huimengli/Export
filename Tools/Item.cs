@@ -127,6 +127,7 @@ namespace Export.Tools
         /// <summary>
         /// 选择文件夹
         /// </summary>
+        /// <param name="label">选择文件夹地址</param>
         /// <param name="tishi">选择时候提示内容</param>
         public static void ChoiceFolder(ref string label, string tishi)
         {
@@ -136,6 +137,7 @@ namespace Export.Tools
         /// <summary>
         /// 选择文件夹
         /// </summary>
+        /// <param name="label">选择文件夹地址</param>
         /// <param name="tishi">选择时候提示内容</param>
         /// <param name="path">已经存在的文件路径</param>
         public static void ChoiceFolder(ref string label, string tishi, string path)
@@ -169,6 +171,7 @@ namespace Export.Tools
         /// <summary>
         /// 选择文件夹
         /// </summary>
+        /// <param name="label">选择文件夹地址</param>
         /// <param name="tishi">选择时候提示内容</param>
         /// <param name="folder">系统文件夹枚举项</param>
         public static void ChoiceFolder(ref string label, string tishi, Environment.SpecialFolder folder)
@@ -366,9 +369,7 @@ namespace Export.Tools
         /// <summary>
         /// 获取输入
         /// </summary>
-        /// <param name="tishi">输入框提示</param>
-        /// <param name="value">输入框内已有内容</param>
-        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <param name="callBack">回调函数</param>
         /// <returns></returns>
         public static void GetInput(Action<string> callBack)
         {
@@ -379,8 +380,7 @@ namespace Export.Tools
         /// 获取输入
         /// </summary>
         /// <param name="tishi">输入框提示</param>
-        /// <param name="value">输入框内已有内容</param>
-        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <param name="callBack">回调函数</param>
         /// <returns></returns>
         public static void GetInput(string tishi, Action<string> callBack)
         {
@@ -392,7 +392,7 @@ namespace Export.Tools
         /// </summary>
         /// <param name="tishi">输入框提示</param>
         /// <param name="value">输入框内已有内容</param>
-        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <param name="callBack">回调函数</param>
         /// <returns></returns>
         public static void GetInput(string tishi, string value, Action<string> callBack)
         {

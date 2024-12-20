@@ -20,6 +20,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
+    <DocumentationFile>bin\Debug\Export.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -151,7 +152,8 @@
   <PropertyGroup>
     <PostBuildEvent>taskkill /F /IM Unity.exe /T
 del /F /S /Q "D:\unity\truck\Assets\Lib\*"
-xcopy /Y /R "$(TargetDir)$(TargetFileName)" "D:\unity\truck\Assets\Lib\"
-xcopy /Y /R "$(TargetDir)$(TargetFileName)" "D:\lt\git\Export\dict\"</PostBuildEvent>
+xcopy /Y /R "$(TargetDir)$(TargetFileName)" "D:\unity\truck\Assets\Lib\" || exit /b /1
+xcopy /Y /R "$(TargetDir)Export.xml" "D:\unity\truck\Assets\Lib\" || exit /b /1
+xcopy /Y /R "$(TargetDir)$(TargetFileName)" "D:\lt\git\Export\dict\" || exit /b /1</PostBuildEvent>
   </PropertyGroup>
 </Project>

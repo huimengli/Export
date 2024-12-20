@@ -15,8 +15,15 @@ namespace Export.Class
     /// <typeparam name="TValue"></typeparam>
     public class DictionaryEX<TKey, TValue> : Dictionary<TKey, TValue>
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public DictionaryEX() { }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dict"></param>
         public DictionaryEX(Dictionary<TKey, TValue> dict)
         {
             foreach (var item in dict)
@@ -25,6 +32,11 @@ namespace Export.Class
             }
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <param name="values"></param>
         public DictionaryEX(TKey[] keys, TValue[] values)
         {
             for (int i = 0; i < Math.Min(keys.Length, values.Length); i++)
@@ -33,6 +45,11 @@ namespace Export.Class
             }
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <param name="values"></param>
         public DictionaryEX(List<TKey> keys, List<TValue> values) : this(keys.ToArray(), values.ToArray())
         {
 
@@ -208,7 +225,11 @@ namespace Export.Class
         #endregion
 
         #region 读取
-
+        /// <summary>
+        /// 读取字典格式数据
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static Dictionary<string, bool> FromBoolDict(this string str)
         {
             var ret = new Dictionary<string, bool>();
@@ -233,6 +254,11 @@ namespace Export.Class
             return ret;
         }
 
+        /// <summary>
+        /// 读取字典格式数据
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static Dictionary<string, int> FromIntDict(this string str)
         {
             var ret = new Dictionary<string, int>();
@@ -257,6 +283,11 @@ namespace Export.Class
             return ret;
         }
 
+        /// <summary>
+        /// 读取字典格式数据
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> FromStringDict(this string str)
         {
             var ret = new Dictionary<string, string>();
@@ -281,6 +312,12 @@ namespace Export.Class
             return ret;
         }
 
+        /// <summary>
+        /// 读取字典格式数据
+        /// 转换成增强格式字典
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static DictionaryEX<string, bool> FromBoolDictEX(this string str)
         {
             var ret = new DictionaryEX<string, bool>();
@@ -305,6 +342,12 @@ namespace Export.Class
             return ret;
         }
 
+        /// <summary>
+        /// 读取字典格式数据
+        /// 转换成增强格式字典
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static DictionaryEX<string, int> FromIntDictEX(this string str)
         {
             var ret = new DictionaryEX<string, int>();
@@ -329,6 +372,12 @@ namespace Export.Class
             return ret;
         }
 
+        /// <summary>
+        /// 读取字典格式数据
+        /// 转换成增强格式字典
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static DictionaryEX<string, string> FromStringDictEX(this string str)
         {
             var ret = new DictionaryEX<string, string>();
@@ -457,6 +506,7 @@ namespace Export.Class
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="dict"></param>
+        /// <param name="action">操作方法</param>
         public static void ForEach<TKey, TValue>(
             this DictionaryEX<TKey, TValue> dict,
             Action<TKey, TValue> action
@@ -516,6 +566,7 @@ namespace Export.Class
         /// <typeparam name="RKey"></typeparam>
         /// <typeparam name="RValue"></typeparam>
         /// <param name="dict"></param>
+        /// <param name="func">操作方法</param>
         /// <returns></returns>
         public static DictionaryEX<RKey, RValue> Map<TKey, TValue, RKey, RValue>(
             this DictionaryEX<TKey, TValue> dict,
@@ -538,6 +589,7 @@ namespace Export.Class
         /// <typeparam name="RKey"></typeparam>
         /// <typeparam name="RValue"></typeparam>
         /// <param name="dict"></param>
+        /// <param name="func">操作方法</param>
         /// <returns></returns>
         public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
             this DictionaryEX<TKey,TValue> dict,
@@ -560,6 +612,7 @@ namespace Export.Class
         /// <typeparam name="RKey"></typeparam>
         /// <typeparam name="RValue"></typeparam>
         /// <param name="dict"></param>
+        /// <param name="func">操作方法</param>
         /// <returns></returns>
         public static DictionaryEX<RKey,RValue> Map<TKey,TValue,RKey,RValue>(
             this DictionaryEX<TKey,TValue> dict,
