@@ -86,6 +86,7 @@
     <Compile Include="Attribute\Engine\ReadOnlyTextAreaAttribute.cs" />
     <Compile Include="Attribute\Editor\ReadOnlyTextAreaDrawer.cs" />
     <Compile Include="BehaviourEX\NrealBehaviour.cs" />
+    <Compile Include="BehaviourEX\UUIDBehavior.cs" />
     <Compile Include="Class\DictionaryEX.cs" />
     <Compile Include="Editor\InspectorEX.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
