@@ -189,7 +189,8 @@ namespace Export
                 else
                 {
                     record2.SetPATH(Path);
-                    record2.Start();
+                    var ffpath = string.IsNullOrWhiteSpace(record2.FFMPEGPATH)? FFMPEGEXEPATH: record2.FFMPEGPATH;
+                    record2.Start(ffpath);
                     Debug.Log("开始录制");
                 }
             }

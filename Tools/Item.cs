@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Export.Forms;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Export.Forms;
-using UnityEngine;
 
 namespace Export.Tools
 {
@@ -15,6 +14,7 @@ namespace Export.Tools
     /// </summary>
     public class Item
     {
+
         /// <summary>
         /// 选择的文件夹路径
         /// </summary>
@@ -127,6 +127,7 @@ namespace Export.Tools
         /// <summary>
         /// 选择文件夹
         /// </summary>
+        /// <param name="label">选择文件夹地址</param>
         /// <param name="tishi">选择时候提示内容</param>
         public static void ChoiceFolder(ref string label, string tishi)
         {
@@ -136,6 +137,7 @@ namespace Export.Tools
         /// <summary>
         /// 选择文件夹
         /// </summary>
+        /// <param name="label">选择文件夹地址</param>
         /// <param name="tishi">选择时候提示内容</param>
         /// <param name="path">已经存在的文件路径</param>
         public static void ChoiceFolder(ref string label, string tishi, string path)
@@ -169,6 +171,7 @@ namespace Export.Tools
         /// <summary>
         /// 选择文件夹
         /// </summary>
+        /// <param name="label">选择文件夹地址</param>
         /// <param name="tishi">选择时候提示内容</param>
         /// <param name="folder">系统文件夹枚举项</param>
         public static void ChoiceFolder(ref string label, string tishi, Environment.SpecialFolder folder)
@@ -213,7 +216,7 @@ namespace Export.Tools
         /// <param name="tishi">选择时候提示内容</param>
         /// <param name="folder">系统文件夹枚举项</param>
         /// <param name="name">限定文件</param>
-        public static void ChoiceFile(ref string label,string tishi,Environment.SpecialFolder folder,string name)
+        public static void ChoiceFile(ref string label, string tishi, Environment.SpecialFolder folder, string name)
         {
             var openDialog = new OpenFileDialog();
 
@@ -225,9 +228,18 @@ namespace Export.Tools
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                UnityEngine.Debug.Log(openDialog.FileName);
+                Log(openDialog.FileName);
                 label = openDialog.FileName;
             }
+        }
+
+        /// <summary>
+        /// 打印内容
+        /// </summary>
+        /// <param name="value"></param>
+        private static void Log(string value)
+        {
+            UnityEngine.Debug.Log(value);
         }
 
         /// <summary>
@@ -237,7 +249,7 @@ namespace Export.Tools
         /// <param name="tishi">选择时候提示内容</param>
         /// <param name="folder">系统文件夹枚举项</param>
         /// <param name="name">限定文件</param>
-        public static void ChoiceFile(ref string label,string tishi,string folder,string name)
+        public static void ChoiceFile(ref string label, string tishi, string folder, string name)
         {
             var openDialog = new OpenFileDialog();
 
@@ -249,7 +261,7 @@ namespace Export.Tools
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                UnityEngine.Debug.Log(openDialog.FileName);
+                Log(openDialog.FileName);
                 label = openDialog.FileName;
             }
         }
@@ -297,93 +309,80 @@ namespace Export.Tools
             return assembly.Location;
         }
 
-        ///// <summary>
-        ///// 获取输入
-        ///// </summary>
-        ///// <returns></returns>
-        //public static Task<String> GetInput()
-        //{
-        //    var value = "";
+        /// <summary>
+        /// 打开网站|其他东西
+        /// </summary>
+        /// <param name="web">网址|地址</param>
+        public static void OpenOnWindows(string web)
+        {
+            System.Diagnostics.Process.Start(web);
+        }
 
-        //    return Task.Factory.StartNew(() =>
-        //    {
-        //        System.Windows.Forms.Application.EnableVisualStyles();
-        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-        //        var input = new InputBox();
-        //        System.Windows.Forms.Application.Run(input);
+        /// <summary>
+        /// 打开文件
+        /// </summary>
+        /// <param name="path"></param>
+        public static void OpenFile(string path)
+        {
+            var command = string.Format("explorer /select,{0}", path);
+            UseCmd(command);
+        }
 
-        //        value = input.value;
-        //    }).ContinueWith(t =>
-        //    {
-        //        // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
-        //        Debug.Log("用户输入内容: " + value);
-        //        return value;
-        //    }, TaskScheduler.FromCurrentSynchronizationContext());// 使用主线程的上下文来更新 UI 或其他主线程操作
-        //}
+        /// <summary>
+        /// 根据INI内容创建regex对象
+        /// </summary>
+        /// <param name="iniValue"></param>
+        /// <returns></returns>
+        public static Regex CreateRegex(string iniValue)
+        {
+            if (iniValue == null)
+            {
+                return new Regex("");
+            }
+            var read = new Regex("^[\"']?([^\r\n]+)[\"']?$");
+            var value = read.Match(iniValue);
+            if (value.Success)
+            {
+                var regex = new Regex(value.Groups[1].ToString());
+                return regex;
+            }
+            else
+            {
+                return new Regex(iniValue);
+            }
+        }
 
-        ///// <summary>
-        ///// 获取输入
-        ///// 需要.NET 4.5及以上
-        ///// </summary>
-        ///// <returns></returns>
-        //public static async string GetInput()
-        //{
-        //    var value = "";
-
-        //    value = await Task<string>.Factory.StartNew(() =>
-        //    {
-        //        System.Windows.Forms.Application.EnableVisualStyles();
-        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-        //        var input = new InputBox();
-        //        System.Windows.Forms.Application.Run(input);
-
-        //        return input.value;
-        //    });
-
-        //    return value;
-        //}
-
-        ///// <summary>
-        ///// 获取输入
-        ///// </summary>
-        ///// <returns></returns>
-        //public static string GetInput()
-        //{
-        //    var value = "";
-
-        //    ItemAdd.Run(() =>
-        //    {
-        //        System.Windows.Forms.Application.EnableVisualStyles();
-        //        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-        //        var input = new InputBox();
-        //        System.Windows.Forms.Application.Run(input);
-
-        //        value = input.value;
-        //    });
-
-        //    return value;
-        //}
+        /// <summary>
+        /// 将regex对象转为ini内容
+        /// </summary>
+        /// <param name="regex"></param>
+        /// <returns></returns>
+        public static string RegexToIni(Regex regex)
+        {
+            var sb = new StringBuilder();
+            sb.Append('"');
+            sb.Append(regex.ToString());
+            sb.Append('"');
+            return sb.ToString();
+        }
 
         /// <summary>
         /// 获取输入
         /// </summary>
-        /// <param name="tishi">输入框提示</param>
-        /// <param name="value">输入框内已有内容</param>
-        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <param name="callBack">回调函数</param>
         /// <returns></returns>
         public static void GetInput(Action<string> callBack)
         {
-            GetInput("请输入内容:",callBack);
+            GetInput("请输入内容:", callBack);
         }
-        
+
         /// <summary>
         /// 获取输入
         /// </summary>
         /// <param name="tishi">输入框提示</param>
-        /// <param name="value">输入框内已有内容</param>
-        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <param name="callBack">回调函数</param>
         /// <returns></returns>
-        public static void GetInput(string tishi,Action<string> callBack)
+        public static void GetInput(string tishi, Action<string> callBack)
         {
             GetInput(tishi, "", callBack);
         }
@@ -393,34 +392,34 @@ namespace Export.Tools
         /// </summary>
         /// <param name="tishi">输入框提示</param>
         /// <param name="value">输入框内已有内容</param>
-        /// <param name="tishi">回调函数,在这里通过委托修改内容</param>
+        /// <param name="callBack">回调函数</param>
         /// <returns></returns>
-        public static void GetInput(string tishi,string value,Action<string> callBack)
+        public static void GetInput(string tishi, string value, Action<string> callBack)
         {
             var form = GetForm("InputBox");
             if (form == null)
             {
                 Task.Factory.StartNew(() =>
-                    {
-                        System.Windows.Forms.Application.EnableVisualStyles();
-                        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-                        var input = new InputBox(tishi,value);
-                        System.Windows.Forms.Application.Run(input);
+                {
+                    System.Windows.Forms.Application.EnableVisualStyles();
+                    System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+                    var input = new InputBox(tishi, value);
+                    System.Windows.Forms.Application.Run(input);
 
-                        return input.value;
-                    }).ContinueWith(t =>
+                    return input.value;
+                }).ContinueWith(t =>
+                {
+                    var ret = t.Result;
+                    // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
+                    Log("用户输入内容: " + ret);
+                    if (callBack != null && !string.IsNullOrEmpty(ret))
                     {
-                        var ret = t.Result;
-                        // 输出用户输入到 Unity 控制台，或者根据需要处理用户输入
-                        Debug.Log("用户输入内容: " + ret);
-                        if (callBack != null && !string.IsNullOrEmpty(ret))
-                        {
-                            //在主线程上执行回调
-                            //Dispatcher.Invoke(() => callBack(ret));
-                            //不使用Dispatcher反而可以使用...
-                            callBack(ret);
-                        }
-                    });
+                        //在主线程上执行回调
+                        //Dispatcher.Invoke(() => callBack(ret));
+                        //不使用Dispatcher反而可以使用...
+                        callBack(ret);
+                    }
+                });
             }
             else
             {

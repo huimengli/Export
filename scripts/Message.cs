@@ -1,8 +1,5 @@
 using Export.Attribute;
 using Export.BehaviourEX;
-using Export.Tools;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Export
@@ -11,8 +8,13 @@ namespace Export
     /// 消息框
     /// 这里使用Dispatcher来替换MonoBehaviour
     /// </summary>
-    public class Message : Dispatcher
+    public class Message : MonoBehaviour
     {
+        /// <summary>
+        /// 是否使用Form来获取输入
+        /// </summary>
+        public bool UseForm;
+
         /// <summary>
         /// 这里不写内容
         /// 是丢给编译器给别人看消息用的

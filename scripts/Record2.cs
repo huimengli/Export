@@ -257,6 +257,57 @@ namespace Export
             recordProcess.StandardInput.WriteLine(recordValue);
         }
 
+        /// <summary>
+        /// 开始录制
+        /// </summary>
+        public void Start(string ffpath)
+        {
+            if (recordProcess != null)
+            {
+                Debug.LogError("录制尚未停止!");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(ffpath))
+            {
+                Debug.LogError("没有找到ffmpeg.exe位置!");
+                return;
+            }
+
+            // 创建新进程启动信息
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardInput = true,
+                RedirectStandardError = false,
+            };
+
+            //判断文件是否已经存在
+            var saveFile = new FileInfo(savePath);
+            if (saveFile.Exists)
+            {
+                if (MessageBox.Show($"{savePath} 文件已经存在,是否删除?", "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    saveFile.Delete();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            // 开始录制
+            recordProcess = new Process { StartInfo = startInfo };
+            recordProcess.Start();
+
+            // 录制命令
+            var recordValue = $"{ffpath} -f gdigrab -i desktop {savePath}";
+            Debug.Log(recordValue);
+            recordProcess.StandardInput.WriteLine(recordValue);
+        }
+
         ///// <summary>
         ///// 停止录制进程
         ///// </summary>
@@ -292,6 +343,9 @@ namespace Export
             }
         }
 
+        /// <summary>
+        /// 关闭ffmpeg
+        /// </summary>
         public void KillFFMPEG()
         {
             // 获取所有名为 "ffmpeg" 的进程

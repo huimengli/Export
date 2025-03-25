@@ -31,6 +31,9 @@ using UnityEditor;
 
 namespace UnityFBXExporter
 {
+    /// <summary>
+    /// 导出功能面板
+    /// </summary>
 	public class ExporterMenu : Editor 
 	{
 		//// Dropdown

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-/// <summary>
-/// 项目空间
-/// </summary>
 namespace Export.Tools
 {
     /// <summary>

@@ -36,8 +36,19 @@ using System.Linq;
 
 namespace UnityFBXExporter
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class FBXExporter
 	{
+        /// <summary>
+        /// 将对象导出成FBX
+        /// </summary>
+        /// <param name="gameObj"></param>
+        /// <param name="newPath"></param>
+        /// <param name="copyMaterials"></param>
+        /// <param name="copyTextures"></param>
+        /// <returns></returns>
 		public static bool ExportGameObjToFBX(GameObject gameObj, string newPath, bool copyMaterials = false, bool copyTextures = false)
 		{
 			// Check to see if the extension is right
@@ -88,16 +99,31 @@ namespace UnityFBXExporter
                 return true;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public static string VersionInformation
 		{
 			get { return "FBX Unity Export version 1.1.1 (Originally created for the Unity Asset, Building Crafter)"; }
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
 		public static long GetRandomFBXId()
 		{
 			return System.BitConverter.ToInt64(System.Guid.NewGuid().ToByteArray(), 0);
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObj"></param>
+        /// <param name="newPath"></param>
+        /// <param name="copyMaterials"></param>
+        /// <param name="copyTextures"></param>
+        /// <returns></returns>
 		public static string MeshToString (GameObject gameObj, string newPath, bool copyMaterials = false, bool copyTextures = false)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -392,6 +418,14 @@ namespace UnityFBXExporter
 			return sb.ToString();
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObj"></param>
+        /// <param name="path"></param>
+        /// <param name="copyTextures"></param>
+        /// <param name="texturesFolder"></param>
+        /// <param name="materialsFolder"></param>
 		public static void CopyComplexMaterialsToPath(GameObject gameObj, string path, bool copyTextures, string texturesFolder = "/Textures", string materialsFolder = "/Materials")
 		{
 #if UNITY_EDITOR
@@ -493,6 +527,13 @@ namespace UnityFBXExporter
 #endif
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="newName"></param>
+        /// <param name="newFolderPath"></param>
+        /// <returns></returns>
 		public static bool CopyAndRenameAsset(Object obj, string newName, string newFolderPath)
 		{
 #if UNITY_EDITOR
@@ -586,6 +627,13 @@ namespace UnityFBXExporter
 			}
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="newName"></param>
+        /// <param name="newFolderPath"></param>
+        /// <returns></returns>
 		public static Object CopyAndRenameAssetReturnObject(Object obj, string newName, string newFolderPath)
 		{
 			#if UNITY_EDITOR

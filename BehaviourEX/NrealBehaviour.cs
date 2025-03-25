@@ -400,7 +400,7 @@ namespace Export.BehaviourEX
         /// 遍历执行
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name=""></param>
+        /// <param name="list"></param>
         /// <param name="action"></param>
         public static void ForEach<T>(this List<T> list, Action<T, int> action)
         {
@@ -577,6 +577,13 @@ namespace Export.BehaviourEX
             return default(T); // 如果没有找到符合条件的元素，则返回默认值
         }
 
+        /// <summary>
+        /// 生成列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public static List<int> Range<T>(this List<T> list, int end)
         {
             var ret = new List<int>();
@@ -587,6 +594,14 @@ namespace Export.BehaviourEX
             return ret;
         }
 
+        /// <summary>
+        /// 生成列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public static List<int> Range<T>(this List<T> list, int start, int end)
         {
             var ret = new List<int>();
@@ -597,6 +612,15 @@ namespace Export.BehaviourEX
             return ret;
         }
 
+        /// <summary>
+        /// 生成列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="step"></param>
+        /// <returns></returns>
         public static List<int> Range<T>(this List<T> list, int start, int end, int step)
         {
             var ret = new List<int>();
